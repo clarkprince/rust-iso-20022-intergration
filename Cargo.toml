@@ -1,0 +1,96 @@
+[package]
+name = "iso20022-payment-processor"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Organization"]
+description = "Enterprise ISO 20022 Payment Processing Service"
+
+[dependencies]
+# Web framework
+actix-web = "4.4"
+actix-cors = "0.6"
+actix-service = "2.0"
+
+# Async runtime
+tokio = { version = "1.28", features = ["full"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json"] }
+deadpool-postgres = "0.10"
+
+# Message Queue
+lapin = "2.1"  # RabbitMQ client
+amq-protocol-types = "7.0"
+
+# Validation
+jsonschema = "0.17"
+validator = { version = "0.16", features = ["derive"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging and metrics
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-bunyan-formatter = "0.3"
+tracing-log = "0.1"
+metrics = "0.21"
+metrics-exporter-prometheus = "0.12"
+
+# Configuration
+config = "0.13"
+dotenv = "0.15"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.4", features = ["v4", "serde"] }
+async-trait = "0.1"
+pin-project-lite = "0.2"
+rand = "0.8"
+regex = "1.9"
+
+# Security
+jsonwebtoken = "8.3"
+argon2 = "0.5"
+ring = "0.16"
+
+# Testing
+mockall = "0.11"
+fake = { version = "2.6", features = ['derive'] }
+wiremock = "0.5"
+
+[dev-dependencies]
+tokio-test = "0.4"
+proptest = "1.2"
+test-case = "3.1"
+actix-rt = "2.5"  # Add this dependency for actix-rt
+
+[[test]]
+name = "payment_service_tests"
+path = "tests/payment_service_tests.rs"
+
+[[test]]
+name = "payment_validator_tests"
+path = "tests/payment_validator_tests.rs"
+
+[[test]]
+name = "api_tests"
+path = "tests/api_tests.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = 'abort'
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
